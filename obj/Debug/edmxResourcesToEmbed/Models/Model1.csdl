@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AccentureBibliotecaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Autores">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Contacto" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="escritoPors" Relationship="Self.FK_Autor" FromRole="Autores" ToRole="escritoPor" />
+  </EntityType>
+  <EntityType Name="Editoriales">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Libros" Relationship="Self.FK_Editorial" FromRole="Editoriales" ToRole="Libros" />
+  </EntityType>
+  <EntityType Name="escritoPor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id_Autor" Type="Int32" Nullable="false" />
+    <Property Name="Id_Libro" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Autores" Relationship="Self.FK_Autor" FromRole="escritoPor" ToRole="Autores" />
+    <NavigationProperty Name="Libro" Relationship="Self.FK_Libro" FromRole="escritoPor" ToRole="Libros" />
+  </EntityType>
+  <EntityType Name="Genero">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Libros" Relationship="Self.FK_Genero" FromRole="Generos" ToRole="Libros" />
+  </EntityType>
+  <EntityType Name="Libro">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ISBN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Titulo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Id_Editorial" Type="Int32" Nullable="false" />
+    <Property Name="Id_Genero" Type="Int32" Nullable="false" />
+    <Property Name="FechaLanzamiento" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Editoriales" Relationship="Self.FK_Editorial" FromRole="Libros" ToRole="Editoriales" />
+    <NavigationProperty Name="escritoPor" Relationship="Self.FK_Libro" FromRole="Libros" ToRole="escritoPor" />
+    <NavigationProperty Name="Genero" Relationship="Self.FK_Genero" FromRole="Libros" ToRole="Generos" />
+  </EntityType>
+  <Association Name="FK_Autor">
+    <End Role="Autores" Type="AccentureBibliotecaModel.Autores" Multiplicity="1" />
+    <End Role="escritoPor" Type="Self.escritoPor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autores">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="escritoPor">
+        <PropertyRef Name="Id_Autor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Editorial">
+    <End Role="Editoriales" Type="AccentureBibliotecaModel.Editoriales" Multiplicity="1" />
+    <End Role="Libros" Type="Self.Libro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editoriales">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Libros">
+        <PropertyRef Name="Id_Editorial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Libro">
+    <End Role="Libros" Type="Self.Libro" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="escritoPor" Type="Self.escritoPor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Libros">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="escritoPor">
+        <PropertyRef Name="Id_Libro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Genero">
+    <End Role="Generos" Type="Self.Genero" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Libros" Type="Self.Libro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Generos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Libros">
+        <PropertyRef Name="Id_Genero" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AccentureBibliotecaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Autores1" EntityType="AccentureBibliotecaModel.Autores" />
+    <EntitySet Name="Editoriales1" EntityType="AccentureBibliotecaModel.Editoriales" />
+    <EntitySet Name="escritoPors" EntityType="Self.escritoPor" />
+    <EntitySet Name="Generos" EntityType="Self.Genero" />
+    <EntitySet Name="Libros" EntityType="Self.Libro" />
+    <AssociationSet Name="FK_Autor" Association="Self.FK_Autor">
+      <End Role="Autores" EntitySet="Autores1" />
+      <End Role="escritoPor" EntitySet="escritoPors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Editorial" Association="Self.FK_Editorial">
+      <End Role="Editoriales" EntitySet="Editoriales1" />
+      <End Role="Libros" EntitySet="Libros" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Libro" Association="Self.FK_Libro">
+      <End Role="Libros" EntitySet="Libros" />
+      <End Role="escritoPor" EntitySet="escritoPors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Genero" Association="Self.FK_Genero">
+      <End Role="Generos" EntitySet="Generos" />
+      <End Role="Libros" EntitySet="Libros" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

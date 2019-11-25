@@ -1,0 +1,25 @@
+﻿@using BibliotecaIntegrador.Models;
+@model List<Genero>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>mostrarGeneros</title>
+</head>
+<body>
+    <div>
+        <h1>Los generos son:</h1>
+        <ul>
+            @foreach (Genero genero in this.Model)
+            {
+                <li>@genero.Nombre</li>
+            }
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+﻿@using BibliotecaIntegrador.Models
+@model List<Libro>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>listaLibros</title>
+</head>
+<body>
+    <div>
+        <h1>Libros:</h1>
+        <ul>
+            @foreach (Libro libro in this.Model)
+            {
+                <li>@libro.ISBN</li>
+                <li>ISBN: @libro.Titulo</li>
+                <!--<li>Editorial: </li>-->
+                <li>Fecha de lanzamiento: @libro.FechaLanzamiento</li>
+                <li>Genero: @libro.Id_Genero</li>
+            }
+        </ul>
+    </div>
+</body>
+</html>

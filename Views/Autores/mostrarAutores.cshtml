@@ -1,0 +1,26 @@
+﻿@using BibliotecaIntegrador.Models;
+@model List<Autores>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista Autores</title>
+</head>
+<body>
+    <div>
+        <h1>Lista Autores:</h1>
+        <ul>
+            @foreach (Autores autores in this.Model)
+            {
+                <li>@autores.Nombre</li>
+
+            }
+        </ul>
+    </div>
+</body>
+</html>
